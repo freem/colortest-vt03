@@ -31,7 +31,7 @@ Some screenshots are also included, mainly for documentation's sake.
 
 Interface
 ---------
-!(/screenshot.png)
+![Main interface screenshot](./screenshot.png)
 
 Background palettes are found near the bottom middle of the screen, while the
 Sprite palettes are on the right. Each palette preview includes solid color
@@ -82,7 +82,7 @@ The [NESdev Wiki's Mapper 256 page](http://wiki.nesdev.com/w/index.php/NES_2.0_M
 This solution, while great for quick tests, doesn't really work well
 on EmuVT, or even real hardware.
 
-!(/emuvt_waixing.png)
+![The result of loading "colortest-vt03_waixing.nes" in EmuVT](./emuvt_waixing.png)
 
 Indeed, running "`colortest-vt03_waixing.nes`" on EmuVT will produce incorrect
 behavior, shown above.
