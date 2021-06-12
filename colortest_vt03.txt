@@ -15,8 +15,8 @@ http://wiki.nesdev.com/w/index.php/VT03%2B_Enhanced_Palette
 
 Requirements
 ------------
-VT03 supporting emulator (NintendulatorNRS, EmuVT... dunno about MAME)
-or hardware (untested, as I don't own any VT03 devices)
+VT03 supporting emulator (NintendulatorNRS, EmuVT, MAME) or hardware (untested,
+as I don't own any VT03 devices)
 
 Files
 -----
@@ -56,7 +56,7 @@ There are five items that can be modified:
 
 Usage
 -----
-Use the d-pad to move the cursor (Up/Down) and change values (Left/Right).
+Use the D-Pad to move the cursor (Up/Down) and change values (Left/Right).
 If you need to reset, press Select+Start.
 
 Technical Details
@@ -104,7 +104,11 @@ properly on EmuVT.
 use with NintendulatorNRS.
 
 "colortest-vt03_emuvt.bin" is the above file without an iNES header.
-It can be run in NintendulatorNRS and EmuVT. Possibly also MAME.
+It can be run in NintendulatorNRS, EmuVT, and MAME.
+
+Running the bin file in MAME requires loading it as an existing ROM. I have been using
+"vtsndtest" as a surrogate. Make the "vtsndtest" directory if it doesn't already exist
+in your MAME ROMs folder, then copy the .bin file there and rename it to "rom.bin".
 
 --------------------------------------------------
 Though it's not immediately obvious, the demo uses 4bpp tiles.
@@ -144,7 +148,7 @@ $3FEx |  BG1 12-15 |  BG2 12-15 |  BG3 12-15 |  BG4 12-15 |  /
 $3FFx | SPR1 12-15 | SPR2 12-15 | SPR3 12-15 | SPR4 12-15 | /
 ------+------------+------------+------------+------------+
 
-In old color mode, you just use the regular NES color values.
+In old color mode, you just write the regular NES color values to the lower byte section ($3F00-$3F7F).
 
 For new color mode...
 
