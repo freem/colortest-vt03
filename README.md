@@ -37,7 +37,7 @@ Some screenshots are also included, mainly for documentation's sake.
 
 Interface
 ---------
-![Main interface screenshot (VT03)](./screenshot.png) [Main interface screenshot (VT32)](./screenshot_vt32.png) 
+![Main interface screenshot (VT03)](./screenshot.png) ![Main interface screenshot (VT32)](./screenshot_vt32.png) 
 
 Background palettes are found near the bottom middle of the screen, while the
 Sprite palettes are on the right. Each palette preview includes solid color
