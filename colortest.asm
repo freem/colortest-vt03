@@ -15,6 +15,8 @@
 ; the name comes from the fact that all OneBus ROMs start execution at $007FFFC,
 ; meaning the *smallest* possible rom is 512KiB.
 
+; _VT32 - build ROM for VT32
+
 ;==============================================================================;
 .ifndef _BIN
 ; NES 2.0 header
@@ -78,7 +80,11 @@
 ; $9 - vt32
 ; $A - vt369
 ; $B - UM6578
+.ifdef _VT32
+	.db 9
+.else
 	.db 7
+.endif
 
 	.db 0 ; misc. roms
 
@@ -98,7 +104,12 @@
 ;==============================================================================;
 ; begin program code
 .org $C000
-	.db "VT03 Color Test by freem",$00
+.ifdef _VT32
+	.db "VT32"
+.else
+	.db "VT03"
+.endif
+	.db " Color Test by freem",$00
 
 ;==============================================================================;
 ; 4bpp palette mode for backgrounds is weird...
@@ -150,356 +161,11 @@
 ; $3F7C | $3FFC | Spr pal 3 | colors 12-15
 ;-------+-------+-----------+--------------
 
-; Default Palette Colors low 6 bits
-DefaultPalette_Lo:
-	;--------- s,l,h
-	.db $00 ; black (BG Palette 1 color index #0)
-	VT03Pal_Lo 0,$F,0 ; (BG Palette 1 color index #1)
-	VT03Pal_Lo 0,$E,0 ; (BG Palette 1 color index #2)
-	VT03Pal_Lo 0,$D,0 ; (BG Palette 1 color index #3)
-	;-----------------;
-	.db $00  ; (BG Palette 2 color index #0)
-	VT03Pal_Lo 7,5,6  ; (BG Palette 2 color index #1)
-	VT03Pal_Lo 7,6,6  ; (BG Palette 2 color index #2)
-	VT03Pal_Lo 7,7,6  ; (BG Palette 2 color index #3)
-	;-----------------;
-	.db $00 ; (BG Palette 3 color index #0)
-	VT03Pal_Lo 7,5,$A ; (BG Palette 3 color index #1)
-	VT03Pal_Lo 7,6,$A ; (BG Palette 3 color index #2)
-	VT03Pal_Lo 7,7,$A ; (BG Palette 3 color index #3)
-	;-----------------;
-	.db $00  ; (BG Palette 4 color index #0)
-	VT03Pal_Lo 7,5,1  ; (BG Palette 4 color index #1)
-	VT03Pal_Lo 7,6,1  ; (BG Palette 4 color index #2)
-	VT03Pal_Lo 7,7,1  ; (BG Palette 4 color index #3)
-
-	;--------- s,l,h
-	.db $00 ; (Sprite Palette 1 color index #0)
-	VT03Pal_Lo 2,$E,1 ; (Sprite Palette 1 color index #1)
-	VT03Pal_Lo 2,$D,1 ; (Sprite Palette 1 color index #2)
-	VT03Pal_Lo 2,$C,1 ; (Sprite Palette 1 color index #3)
-	;-----------------;
-	.db $00 ; (Sprite Palette 2 color index #0)
-	VT03Pal_Lo 5,3,5  ; (Sprite Palette 2 color index #1)
-	VT03Pal_Lo 5,4,5  ; (Sprite Palette 2 color index #2)
-	VT03Pal_Lo 5,5,5  ; (Sprite Palette 2 color index #3)
-	;-----------------;
-	.db $00 ; (Sprite Palette 3 color index #0)
-	VT03Pal_Lo 5,3,$A ; (Sprite Palette 3 color index #1)
-	VT03Pal_Lo 5,4,$A ; (Sprite Palette 3 color index #2)
-	VT03Pal_Lo 5,5,$A ; (Sprite Palette 3 color index #3)
-	;-----------------;
-	.db $00 ; (Sprite Palette 4 color index #0)
-	VT03Pal_Lo 5,3,1 ; (Sprite Palette 4 color index #1)
-	VT03Pal_Lo 5,4,1 ; (Sprite Palette 4 color index #2)
-	VT03Pal_Lo 5,5,1 ; (Sprite Palette 4 color index #3)
-
-	;--------------------------------------------------------------------------;
-
-	;--------- s,l,h
-	VT03Pal_Lo 0,$C,0  ; (BG Palette 1 color index #4)
-	VT03Pal_Lo 0,$B,0  ; (BG Palette 1 color index #5)
-	VT03Pal_Lo 0,$A,0  ; (BG Palette 1 color index #6)
-	VT03Pal_Lo 0,9,0   ; (BG Palette 1 color index #7)
-	;------------------;
-	VT03Pal_Lo 7,8,6   ; (BG Palette 2 color index #4)
-	VT03Pal_Lo 7,9,6   ; (BG Palette 2 color index #5)
-	VT03Pal_Lo 7,$A,6  ; (BG Palette 2 color index #6)
-	VT03Pal_Lo 7,$B,6  ; (BG Palette 2 color index #7)
-	;------------------;
-	VT03Pal_Lo 7,8,$A  ; (BG Palette 3 color index #4)
-	VT03Pal_Lo 7,9,$A  ; (BG Palette 3 color index #5)
-	VT03Pal_Lo 7,$A,$A ; (BG Palette 3 color index #6)
-	VT03Pal_Lo 7,$B,$A ; (BG Palette 3 color index #7)
-	;------------------;
-	VT03Pal_Lo 7,8,1   ; (BG Palette 4 color index #4)
-	VT03Pal_Lo 7,9,1   ; (BG Palette 4 color index #5)
-	VT03Pal_Lo 7,$A,1  ; (BG Palette 4 color index #6)
-	VT03Pal_Lo 7,$B,1  ; (BG Palette 4 color index #7)
-
-	VT03Pal_Lo 2,$B,1 ; (Sprite Palette 1 color index #4)
-	VT03Pal_Lo 2,$A,1 ; (Sprite Palette 1 color index #5)
-	VT03Pal_Lo 2,9,1 ; (Sprite Palette 1 color index #6)
-	VT03Pal_Lo 2,8,1 ; (Sprite Palette 1 color index #7)
-	;-----------------;
-	VT03Pal_Lo 5,6,5  ; (Sprite Palette 2 color index #4)
-	VT03Pal_Lo 5,7,5  ; (Sprite Palette 2 color index #5)
-	VT03Pal_Lo 5,8,5  ; (Sprite Palette 2 color index #6)
-	VT03Pal_Lo 5,9,5  ; (Sprite Palette 2 color index #7)
-	;-----------------;
-	VT03Pal_Lo 5,6,$A ; (Sprite Palette 3 color index #4)
-	VT03Pal_Lo 5,7,$A ; (Sprite Palette 3 color index #5)
-	VT03Pal_Lo 5,8,$A ; (Sprite Palette 3 color index #6)
-	VT03Pal_Lo 5,9,$A ; (Sprite Palette 3 color index #7)
-	;-----------------;
-	VT03Pal_Lo 5,6,1  ; (Sprite Palette 4 color index #4)
-	VT03Pal_Lo 5,7,1  ; (Sprite Palette 4 color index #5)
-	VT03Pal_Lo 5,8,1  ; (Sprite Palette 4 color index #6)
-	VT03Pal_Lo 5,9,1  ; (Sprite Palette 4 color index #7)
-
-	;--------------------------------------------------------------------------;
-
-	;--------- s,l,h
-	VT03Pal_Lo 0,8,0 ; (BG Palette 1 color index #8)
-	VT03Pal_Lo 0,7,0 ; (BG Palette 1 color index #9)
-	VT03Pal_Lo 0,6,0 ; (BG Palette 1 color index #10)
-	VT03Pal_Lo 0,5,0 ; (BG Palette 1 color index #11)
-	;-----------------;
-	VT03Pal_Lo 7,4,7 ; (BG Palette 2 color index #8)
-	VT03Pal_Lo 7,5,7 ; (BG Palette 2 color index #9)
-	VT03Pal_Lo 7,6,7 ; (BG Palette 2 color index #10)
-	VT03Pal_Lo 7,7,7 ; (BG Palette 2 color index #11)
-	;-----------------;
-	VT03Pal_Lo 7,4,$C ; (BG Palette 3 color index #8)
-	VT03Pal_Lo 7,5,$C ; (BG Palette 3 color index #9)
-	VT03Pal_Lo 7,6,$C ; (BG Palette 3 color index #10)
-	VT03Pal_Lo 7,7,$C ; (BG Palette 3 color index #11)
-	;-----------------;
-	VT03Pal_Lo 7,4,4 ; (BG Palette 4 color index #8)
-	VT03Pal_Lo 7,5,4 ; (BG Palette 4 color index #9)
-	VT03Pal_Lo 7,6,4 ; (BG Palette 4 color index #10)
-	VT03Pal_Lo 7,7,4 ; (BG Palette 4 color index #11)
-
-	; sprites 16x
-	VT03Pal_Lo 2,7,1  ; (Sprite Palette 1 color index #8)
-	VT03Pal_Lo 2,6,1  ; (Sprite Palette 1 color index #9)
-	VT03Pal_Lo 2,5,1  ; (Sprite Palette 1 color index #10)
-	VT03Pal_Lo 2,4,1  ; (Sprite Palette 1 color index #11)
-	;-----------------;
-	VT03Pal_Lo 5,$A,5 ; (Sprite Palette 2 color index #8)
-	VT03Pal_Lo 5,$B,5 ; (Sprite Palette 2 color index #9)
-	VT03Pal_Lo 5,$C,5 ; (Sprite Palette 2 color index #10)
-	VT03Pal_Lo 5,$D,5 ; (Sprite Palette 2 color index #11)
-	;-----------------;
-	VT03Pal_Lo 5,$A,$A ; (Sprite Palette 3 color index #8)
-	VT03Pal_Lo 5,$B,$A ; (Sprite Palette 3 color index #9)
-	VT03Pal_Lo 5,$C,$A ; (Sprite Palette 3 color index #10)
-	VT03Pal_Lo 5,$D,$A ; (Sprite Palette 3 color index #11)
-	;-----------------;
-	VT03Pal_Lo 5,$A,1 ; (Sprite Palette 4 color index #8)
-	VT03Pal_Lo 5,$B,1 ; (Sprite Palette 4 color index #9)
-	VT03Pal_Lo 5,$C,1 ; (Sprite Palette 4 color index #10)
-	VT03Pal_Lo 5,$D,1 ; (Sprite Palette 4 color index #11)
-
-	;--------------------------------------------------------------------------;
-
-	;--------- s,l,h
-	VT03Pal_Lo 1,5,1  ; (BG Palette 1 color index #12)
-	VT03Pal_Lo 1,6,1  ; (BG Palette 1 color index #13)
-	VT03Pal_Lo 1,7,1  ; (BG Palette 1 color index #14)
-	VT03Pal_Lo 1,8,1  ; (BG Palette 1 color index #15)
-	;-----------------;
-	VT03Pal_Lo 7,8,7  ; (BG Palette 2 color index #12)
-	VT03Pal_Lo 7,9,7  ; (BG Palette 2 color index #13)
-	VT03Pal_Lo 7,$A,7 ; (BG Palette 2 color index #14)
-	VT03Pal_Lo 7,$B,7 ; (BG Palette 2 color index #15)
-	;-----------------;
-	VT03Pal_Lo 7,8,$C ; (BG Palette 3 color index #12)
-	VT03Pal_Lo 7,9,$C ; (BG Palette 3 color index #13)
-	VT03Pal_Lo 7,$A,$C ; (BG Palette 3 color index #14)
-	VT03Pal_Lo 7,$B,$C ; (BG Palette 3 color index #15)
-	;-----------------;
-	VT03Pal_Lo 7,8,4  ; (BG Palette 4 color index #12)
-	VT03Pal_Lo 7,9,4  ; (BG Palette 4 color index #13)
-	VT03Pal_Lo 7,$A,4 ; (BG Palette 4 color index #14)
-	VT03Pal_Lo 7,$B,4 ; (BG Palette 4 color index #15)
-
-	; sprites 16x
-	VT03Pal_Lo 1,0,$C ; (Sprite Palette 1 color index #12)
-	VT03Pal_Lo 1,0,5  ; (Sprite Palette 1 color index #13)
-	VT03Pal_Lo 1,0,8  ; (Sprite Palette 1 color index #14)
-	VT03Pal_Lo 0,$F,0 ; (Sprite Palette 1 color index #15)
-	;-----------------;
-	VT03Pal_Lo 4,$D,5 ; (Sprite Palette 2 color index #12)
-	VT03Pal_Lo 3,$D,5 ; (Sprite Palette 2 color index #13)
-	VT03Pal_Lo 2,$D,5 ; (Sprite Palette 2 color index #14)
-	VT03Pal_Lo 1,$D,5 ; (Sprite Palette 2 color index #15)
-	;-----------------;
-	VT03Pal_Lo 4,$D,$A ; (Sprite Palette 3 color index #12)
-	VT03Pal_Lo 3,$D,$A ; (Sprite Palette 3 color index #13)
-	VT03Pal_Lo 2,$D,$A ; (Sprite Palette 3 color index #14)
-	VT03Pal_Lo 1,$D,$A ; (Sprite Palette 3 color index #15)
-	;-----------------;
-	VT03Pal_Lo 4,$D,1 ; (Sprite Palette 4 color index #12)
-	VT03Pal_Lo 3,$D,1 ; (Sprite Palette 4 color index #13)
-	VT03Pal_Lo 2,$D,1 ; (Sprite Palette 4 color index #14)
-	VT03Pal_Lo 1,$D,1 ; (Sprite Palette 4 color index #15)
-
-;==============================================================================;
-; Default Palette Colors high 6 bits
-DefaultPalette_Hi:
-	.db $00 ; black (BG Palette 1 color index #0)
-	;--------- s,l,h
-	VT03Pal_Hi 0,$F,0 ; white (BG Palette 1 color index #1)
-	VT03Pal_Hi 0,$E,0 ; RGB ff0000, table $10C (BG Palette 1 color index #2)
-	VT03Pal_Hi 0,$D,0  ; RGB ff8000, table $521 (BG Palette 1 color index #3)
-	;-----------------;
-	.db $00  ; (BG Palette 2 color index #0)
-	VT03Pal_Hi 7,5,6  ; (BG Palette 2 color index #1)
-	VT03Pal_Hi 7,6,6  ; (BG Palette 2 color index #2)
-	VT03Pal_Hi 7,7,6  ; (BG Palette 2 color index #3)
-	;-----------------;
-	.db $00 ; (BG Palette 3 color index #0)
-	VT03Pal_Hi 7,5,$A ; (BG Palette 3 color index #1)
-	VT03Pal_Hi 7,6,$A ; (BG Palette 3 color index #2)
-	VT03Pal_Hi 7,7,$A ; (BG Palette 3 color index #3)
-	;-----------------;
-	.db $00  ; (BG Palette 4 color index #0)
-	VT03Pal_Hi 7,5,1  ; (BG Palette 4 color index #1)
-	VT03Pal_Hi 7,6,1  ; (BG Palette 4 color index #2)
-	VT03Pal_Hi 7,7,1  ; (BG Palette 4 color index #3)
-
-	;--------- s,l,h
-	.db $00 ; black (Sprite Palette 1 color index #0)
-	VT03Pal_Hi 2,$E,1 ; (Sprite Palette 1 color index #1)
-	VT03Pal_Hi 2,$D,1 ; (Sprite Palette 1 color index #2)
-	VT03Pal_Hi 2,$C,1 ; (Sprite Palette 1 color index #3)
-	;-----------------;
-	.db $00 ; black (Sprite Palette 2 color index #0)
-	VT03Pal_Hi 5,3,5 ; (Sprite Palette 2 color index #1)
-	VT03Pal_Hi 5,4,5 ; (Sprite Palette 2 color index #2)
-	VT03Pal_Hi 5,5,5 ; (Sprite Palette 2 color index #3)
-	;-----------------;
-	.db $00 ; (Sprite Palette 3 color index #0)
-	VT03Pal_Hi 5,3,$A ; (Sprite Palette 3 color index #1)
-	VT03Pal_Hi 5,4,$A ; (Sprite Palette 3 color index #2)
-	VT03Pal_Hi 5,5,$A ; (Sprite Palette 3 color index #3)
-	;-----------------;
-	.db $00 ; (Sprite Palette 4 color index #0)
-	VT03Pal_Hi 5,3,1 ; (Sprite Palette 4 color index #1)
-	VT03Pal_Hi 5,4,1 ; (Sprite Palette 4 color index #2)
-	VT03Pal_Hi 5,5,1 ; (Sprite Palette 4 color index #3)
-
-	;--------------------------------------------------------------------------;
-
-	;--------- s,l,h
-	VT03Pal_Hi 0,$C,0  ; (BG Palette 1 color index #4)
-	VT03Pal_Hi 0,$B,0  ; (BG Palette 1 color index #5)
-	VT03Pal_Hi 0,$A,0  ; (BG Palette 1 color index #6)
-	VT03Pal_Hi 0,9,0   ; (BG Palette 1 color index #7)
-	;------------------;
-	VT03Pal_Hi 7,8,6   ; (BG Palette 2 color index #4)
-	VT03Pal_Hi 7,9,6   ; (BG Palette 2 color index #5)
-	VT03Pal_Hi 7,$A,6  ; (BG Palette 2 color index #6)
-	VT03Pal_Hi 7,$B,6  ; (BG Palette 2 color index #7)
-	;------------------;
-	VT03Pal_Hi 7,8,$A  ; (BG Palette 3 color index #4)
-	VT03Pal_Hi 7,9,$A  ; (BG Palette 3 color index #5)
-	VT03Pal_Hi 7,$A,$A ; (BG Palette 3 color index #6)
-	VT03Pal_Hi 7,$B,$A ; (BG Palette 3 color index #7)
-	;------------------;
-	VT03Pal_Hi 7,8,1   ; (BG Palette 4 color index #4)
-	VT03Pal_Hi 7,9,1   ; (BG Palette 4 color index #5)
-	VT03Pal_Hi 7,$A,1  ; (BG Palette 4 color index #6)
-	VT03Pal_Hi 7,$B,1  ; (BG Palette 4 color index #7)
-
-	VT03Pal_Hi 2,$B,1 ; (Sprite Palette 1 color index #4)
-	VT03Pal_Hi 2,$A,1 ; (Sprite Palette 1 color index #5)
-	VT03Pal_Hi 2,9,1 ; (Sprite Palette 1 color index #6)
-	VT03Pal_Hi 2,8,1  ; (Sprite Palette 1 color index #7)
-	;-----------------;
-	VT03Pal_Hi 5,6,5  ; (Sprite Palette 2 color index #4)
-	VT03Pal_Hi 5,7,5  ; (Sprite Palette 2 color index #5)
-	VT03Pal_Hi 5,8,5  ; (Sprite Palette 2 color index #6)
-	VT03Pal_Hi 5,9,5  ; (Sprite Palette 2 color index #7)
-	;-----------------;
-	VT03Pal_Hi 5,6,$A ; (Sprite Palette 3 color index #4)
-	VT03Pal_Hi 5,7,$A ; (Sprite Palette 3 color index #5)
-	VT03Pal_Hi 5,8,$A ; (Sprite Palette 3 color index #6)
-	VT03Pal_Hi 5,9,$A ; (Sprite Palette 3 color index #7)
-	;-----------------;
-	VT03Pal_Hi 5,6,1  ; (Sprite Palette 4 color index #4)
-	VT03Pal_Hi 5,7,1  ; (Sprite Palette 4 color index #5)
-	VT03Pal_Hi 5,8,1  ; (Sprite Palette 4 color index #6)
-	VT03Pal_Hi 5,9,1  ; (Sprite Palette 4 color index #7)
-
-	;--------------------------------------------------------------------------;
-
-	;--------- s,l,h
-	VT03Pal_Hi 0,8,0  ; (BG Palette 1 color index #8)
-	VT03Pal_Hi 0,7,0  ; (BG Palette 1 color index #9)
-	VT03Pal_Hi 0,6,0  ; (BG Palette 1 color index #10)
-	VT03Pal_Hi 0,5,0  ; (BG Palette 1 color index #11)
-	;-----------------;
-	VT03Pal_Hi 7,4,7  ; (BG Palette 2 color index #8)
-	VT03Pal_Hi 7,5,7  ; (BG Palette 2 color index #9)
-	VT03Pal_Hi 7,6,7  ; (BG Palette 2 color index #10)
-	VT03Pal_Hi 7,7,7  ; (BG Palette 2 color index #11)
-	;-----------------;
-	VT03Pal_Hi 7,4,$C ; (BG Palette 3 color index #8)
-	VT03Pal_Hi 7,5,$C ; (BG Palette 3 color index #9)
-	VT03Pal_Hi 7,6,$C ; (BG Palette 3 color index #10)
-	VT03Pal_Hi 7,7,$C ; (BG Palette 3 color index #11)
-	;-----------------;
-	VT03Pal_Hi 7,4,4  ; (BG Palette 4 color index #8)
-	VT03Pal_Hi 7,5,4  ; (BG Palette 4 color index #9)
-	VT03Pal_Hi 7,6,4  ; (BG Palette 4 color index #10)
-	VT03Pal_Hi 7,7,4  ; (BG Palette 4 color index #11)
-
-	; sprites 16x
-	VT03Pal_Hi 2,7,1  ; (Sprite Palette 1 color index #8)
-	VT03Pal_Hi 2,6,1  ; (Sprite Palette 1 color index #9)
-	VT03Pal_Hi 2,5,1  ; (Sprite Palette 1 color index #10)
-	VT03Pal_Hi 2,4,1  ; (Sprite Palette 1 color index #11)
-	;-----------------;
-	VT03Pal_Hi 5,$A,5  ; (Sprite Palette 2 color index #8)
-	VT03Pal_Hi 5,$B,5  ; (Sprite Palette 2 color index #9)
-	VT03Pal_Hi 5,$C,5  ; (Sprite Palette 2 color index #10)
-	VT03Pal_Hi 5,$D,5  ; (Sprite Palette 2 color index #11)
-	;-----------------;
-	VT03Pal_Hi 5,$A,$A  ; (Sprite Palette 3 color index #8)
-	VT03Pal_Hi 5,$B,$A  ; (Sprite Palette 3 color index #9)
-	VT03Pal_Hi 5,$C,$A  ; (Sprite Palette 3 color index #10)
-	VT03Pal_Hi 5,$D,$A  ; (Sprite Palette 3 color index #11)
-	;-----------------;
-	VT03Pal_Hi 5,$A,1  ; (Sprite Palette 4 color index #8)
-	VT03Pal_Hi 5,$B,1  ; (Sprite Palette 4 color index #9)
-	VT03Pal_Hi 5,$C,1  ; (Sprite Palette 4 color index #10)
-	VT03Pal_Hi 5,$D,1  ; (Sprite Palette 4 color index #11)
-
-	;--------------------------------------------------------------------------;
-
-	;--------- s,l,h
-	VT03Pal_Hi 1,5,1 ; (BG Palette 1 color index #12)
-	VT03Pal_Hi 1,6,1 ; (BG Palette 1 color index #13)
-	VT03Pal_Hi 1,7,1 ; (BG Palette 1 color index #14)
-	VT03Pal_Hi 1,8,1 ; (BG Palette 1 color index #15)
-	;-----------------;
-	VT03Pal_Hi 7,8,7  ; (BG Palette 2 color index #12)
-	VT03Pal_Hi 7,9,7  ; (BG Palette 2 color index #13)
-	VT03Pal_Hi 7,$A,7 ; (BG Palette 2 color index #14)
-	VT03Pal_Hi 7,$B,7 ; (BG Palette 2 color index #15)
-	;-----------------;
-	VT03Pal_Hi 7,8,$C  ; (BG Palette 3 color index #12)
-	VT03Pal_Hi 7,9,$C  ; (BG Palette 3 color index #13)
-	VT03Pal_Hi 7,$A,$C ; (BG Palette 3 color index #14)
-	VT03Pal_Hi 7,$B,$C ; (BG Palette 3 color index #15)
-	;-----------------;
-	VT03Pal_Hi 7,8,4  ; (BG Palette 4 color index #12)
-	VT03Pal_Hi 7,9,4  ; (BG Palette 4 color index #13)
-	VT03Pal_Hi 7,$A,4 ; (BG Palette 4 color index #14)
-	VT03Pal_Hi 7,$B,4 ; (BG Palette 4 color index #15)
-
-	; sprites 16x
-	VT03Pal_Hi 1,0,$C  ; (Sprite Palette 1 color index #12)
-	VT03Pal_Hi 1,0,5  ; (Sprite Palette 1 color index #13)
-	VT03Pal_Hi 1,0,8  ; (Sprite Palette 1 color index #14)
-	VT03Pal_Hi 0,$F,0  ; (Sprite Palette 1 color index #15)
-	;-----------------;
-	VT03Pal_Hi 4,$D,5 ; (Sprite Palette 2 color index #12)
-	VT03Pal_Hi 3,$D,5 ; (Sprite Palette 2 color index #13)
-	VT03Pal_Hi 2,$D,5 ; (Sprite Palette 2 color index #14)
-	VT03Pal_Hi 1,$D,5 ; (Sprite Palette 2 color index #15)
-	;-----------------;
-	VT03Pal_Hi 4,$D,$A ; (Sprite Palette 3 color index #12)
-	VT03Pal_Hi 3,$D,$A ; (Sprite Palette 3 color index #13)
-	VT03Pal_Hi 2,$D,$A ; (Sprite Palette 3 color index #14)
-	VT03Pal_Hi 1,$D,$A ; (Sprite Palette 3 color index #15)
-	;-----------------;
-	VT03Pal_Hi 4,$D,1 ; (Sprite Palette 4 color index #12)
-	VT03Pal_Hi 3,$D,1 ; (Sprite Palette 4 color index #13)
-	VT03Pal_Hi 2,$D,1 ; (Sprite Palette 4 color index #14)
-	VT03Pal_Hi 1,$D,1 ; (Sprite Palette 4 color index #15)
+.ifdef _VT32
+	.include "defaultpal_vt32.asm"
+.else
+	.include "defaultpal_vt03.asm"
+.endif
 
 ;==============================================================================;
 waitVBlank:
@@ -530,14 +196,29 @@ SpritePreviewY:
 	.db 184-1,176-1,168-1,160-1,152-1,144-1,136-1,128-1
 	.db 120-1,112-1,104-1,96-1,88-1,80-1,72-1,64-2
 
-Label_Header:   .db "VT03 Color Test"
+Label_Header:
+.ifdef _VT32
+	.db "VT32"
+.else
+	.db "VT03"
+.endif
+	.db " Color Test"
+
 Label_PalSet:   .db "Pal Set"
 Label_BG:       .db "BG "
 Label_SPR:      .db "SPR"
 Label_PalIndex: .db "Pal Index"
+
+; VT03, VT09
 Label_Hue:      .db "Hue"
 Label_Sat:      .db "Sat"
 Label_Lum:      .db "Lum"
+
+; VT32
+Label_Red:      .db "Red"
+Label_Green:    .db "Grn"
+Label_Blue:     .db "Blu"
+
 Label_Value:    .db "Hex"
 Label_HiLo:     .db "HiLo"
 
@@ -625,6 +306,17 @@ SetupUI:
 	jsr ppu_writeString
 
 	;--------------------------------;
+.ifdef _VT32
+	; Label_Red $2185
+	lda #<Label_Red
+	sta tmp00
+	lda #>Label_Red
+	sta tmp01
+	ldx #$21
+	ldy #$85
+	lda #Label_Green-Label_Red
+	jsr ppu_writeString
+.else
 	; Label_Hue $2185
 	lda #<Label_Hue
 	sta tmp00
@@ -634,8 +326,20 @@ SetupUI:
 	ldy #$85
 	lda #Label_Sat-Label_Hue
 	jsr ppu_writeString
+.endif
 
 	;--------------------------------;
+.ifdef _VT32
+	; Label_Blue $21A5
+	lda #<Label_Blue
+	sta tmp00
+	lda #>Label_Blue
+	sta tmp01
+	ldx #$21
+	ldy #$A5
+	lda #Label_Value-Label_Blue
+	jsr ppu_writeString
+.else
 	; Label_Sat $21A5
 	lda #<Label_Sat
 	sta tmp00
@@ -645,8 +349,20 @@ SetupUI:
 	ldy #$A5
 	lda #Label_Lum-Label_Sat
 	jsr ppu_writeString
+.endif
 
 	;--------------------------------;
+.ifdef _VT32
+	; Label_Green $21C5
+	lda #<Label_Green
+	sta tmp00
+	lda #>Label_Green
+	sta tmp01
+	ldx #$21
+	ldy #$C5
+	lda #Label_Blue-Label_Green
+	jsr ppu_writeString
+.else
 	; Label_Lum $21C5
 	lda #<Label_Lum
 	sta tmp00
@@ -654,8 +370,9 @@ SetupUI:
 	sta tmp01
 	ldx #$21
 	ldy #$C5
-	lda #Label_Value-Label_Lum
+	lda #Label_Red-Label_Lum
 	jsr ppu_writeString
+.endif
 
 	;--------------------------------;
 	; Label_Value $218E

@@ -1,27 +1,33 @@
-VT03 Color Test
-===============
-Written by freem; initially released on 2021/05/27
+VT03 and VT32 Color Tests
+=========================
+Written by freem
+- initial release: 2021/05/27 (May 27, 2021)
+- VT32 support added on 2025/11/03 (November 3, 2025)
 
 Introduction
 ------------
-VT03 Color Test is a small utility ROM allowing you to preview palette colors
-using VT03's "new color mode". Since the values aren't always intuitive, it's
-a good idea to have a tool that can show you what value you need for a specific
-color.
+The VT03 and VT32 Color Tests are small utility ROMs allowing you to preview
+palette colors using the "new color mode" found on VT03 and VT32-based machines.
+
+VT03's "new color mode" has somewhat unintuitive color values, so this tool
+is a helpful way to figure out what values to use.
+
+VT32, on the other hand, uses a straightforward RGB444 color format.
 
 More information can be found on the NESdev Wiki's ["VT03+ Enhanced Palette" page](http://wiki.nesdev.com/w/index.php/VT03%2B_Enhanced_Palette).
 
 Requirements
 ------------
-VT03 supporting emulator (NintendulatorNRS, EmuVT, MAME) or hardware (untested,
-as I don't own any VT03 devices)
+- VT03 Color Test: VT03-supporting emulator (NintendulatorNRS, EmuVT, MAME) or hardware (untested, as I don't own any VT03 devices)
+- VT32 Color Test: NintendulatorNRS or hardware  (untested, as I don't own any VT32 devices)
 
 Files
 -----
-Aside from this text file, there are three ROM files included in this package:
+Aside from this text file, there are four ROM files included in this package:
 - `colortest-vt03_emuvt.bin`
 - `colortest-vt03_onebus.nes`
 - `colortest-vt03_waixing.nes`
+- `colortest-vt32_onebus.nes`
 
 The difference(s) are explained in the "Technical Details" section.
 
@@ -31,7 +37,7 @@ Some screenshots are also included, mainly for documentation's sake.
 
 Interface
 ---------
-![Main interface screenshot](./screenshot.png)
+![Main interface screenshot (VT03)](./screenshot.png) [Main interface screenshot (VT32)](./screenshot_vt32.png) 
 
 Background palettes are found near the bottom middle of the screen, while the
 Sprite palettes are on the right. Each palette preview includes solid color
@@ -41,17 +47,27 @@ set.
 The value labeled "Hex" is the two bytes required to define the color.
 "Lo" is written to `$3F00-$3F7F`, "Hi" is written to `$3F80-$3FFF`.
 
-There are five items that can be modified:
+There are five items that can be modified, two of which are shared between
+VT03 and VT32 modes:
 
 - "**Pal Set**" refers to the active set of palettes being edited.
   Values range from BG (Background) 1 to BG 4, followed by SPR (Sprites) 1 to SPR 4.
 - "**Pal Index**" refers to the specific color within the selected palette set.
   Values range from `0-F` (0-15).
+
+The VT03 Color Test-specific controls:
 - "**Hue**" modifies the Hue of the current color.
 - "**Sat**" modifies the Saturation of the current color.
 - "**Lum**" modifies the Luminance of the current color.
 
 The values for Hue, Sat, and Lum range from `0-F` (0-15).
+
+The VT32 Color Test-specific controls:
+- "**Red**" modifies the Red value of the current color.
+- "**Blu**" modifies the Blue value of the current color.
+- "**Grn**" modifies the Green value of the current color.
+
+The values for Red, Blu, and Grn range from `0-F` (0-15).
 
 Usage
 -----
@@ -63,7 +79,7 @@ Technical Details
 This program was developed using emulators as the testing platform.
 It may or may not work on real hardware. I don't have any to test with.
 
-As for the three ROM files...
+As for the four ROM files...
 
 "`colortest-vt03_waixing.nes`" was the first version developed.
 It abuses a "feature" of NES 2.0 Mapper 256. If you look closely, you'll
@@ -109,6 +125,9 @@ It can be run in NintendulatorNRS, EmuVT, and MAME.
 Running the bin file in MAME requires loading it as an existing ROM. I have been using
 "`vtsndtest`" as a surrogate. Make the "`vtsndtest`" directory if it doesn't already exist
 in your MAME ROMs folder, then copy the .bin file there and rename it to `rom.bin`.
+
+**`colortest-vt32_onebus.nes`** is the VT32 Color Test, a NES 2.0 Mapper 256
+image that is meant for use with NintendulatorNRS.
 
 --------------------------------------------------
 Though it's not immediately obvious, the demo uses 4bpp tiles.
@@ -156,9 +175,7 @@ Address | `$x0-$x3` | `$x4-$x7` | `$x8-$xB` | `$xC-$xF`
 
 In old color mode, you just write the regular NES color values to the Low Byte section (`$3F00-$3F7F`).
 
-For new color mode...
-
-### The low byte
+### VT03 new color mode low byte
 ```
 76543210
 xx|||__|
@@ -167,11 +184,29 @@ xx|||__|
   ++----- Luminance (lower 2 bits)
 ```
 
-### The high byte
+### VT03 new color mode high byte
 ```
 76543210
 xx|__|||
     | ||
     | ++-- Luminance (upper 2 bits)
     +----- Saturation
+```
+
+### VT32 new color mode low byte
+```
+76543210
+xx|||__|
+  ||  |
+  ||  +-- Red
+  ++----- Green (lower 2 bits)
+```
+
+### VT32 new color mode high byte
+```
+76543210
+xx|__|||
+    | ||
+    | ++-- Green (upper 2 bits)
+    +----- Blue
 ```

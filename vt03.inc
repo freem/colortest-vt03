@@ -365,7 +365,7 @@ VT03_RS232_RX = $411B
 .endm
 
 ; Macro: VT03Pal_Hi
-; Write the LSB value for a color in VTxx new color mode to ROM.
+; Write the MSB value for a color in VTxx new color mode to ROM.
 ; 
 ; Parameters:
 ; - *s* - Saturation
@@ -379,4 +379,26 @@ VT03_RS232_RX = $411B
 ; (end)
 .macro VT03Pal_Hi s,l,h
 	.db #(s & $0F)<<2|(l>>2)
+.endm
+
+; Macro: VT32Pal_Lo
+; Write the LSB value for a color in VT32 RGB444 mode to ROM.
+; 
+; Parameters:
+; - *r* - Red
+; - *g* - Green
+; - *b* - Blue
+.macro VT32Pal_Lo r,g,b
+	.db #(g << 4) & $30 | r & $0F
+.endm
+
+; Macro: VT32Pal_Hi
+; Write the MSB value for a color in VT32 RGB444 mode to ROM.
+; 
+; Parameters:
+; - *r* - Red
+; - *g* - Green
+; - *b* - Blue
+.macro VT32Pal_Hi r,g,b
+	.db #(b & $0F) << 2 | (g >> 2)
 .endm
